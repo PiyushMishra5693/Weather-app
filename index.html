@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="./app.js"></script>
+</head>
+<body>  
+
+        
+        <div class="card">
+
+                <div class="search">
+                    <input class="input" placeholder="Enter the city name">
+                    <button class="button">
+                        <img   src="./weather-app-img/images/search.png">
+                    </button>
+                </div>
+
+                <div class="weather">
+                    <img src="./weather-app-img/images/rain.png" class="weather-icon">
+                    <h1 class="temperature">20 °C</h1>
+                    <h1 class="city" style="color: wheat;">Bangalore</h1>
+                </div>
+
+
+                <div class="condition">
+
+                    <div style="display: flex;color: white;font-weight: 300; justify-content: center;align-items: center; margin: 20px;">
+                        <img style="width: 50px;height: 50px;"  src="./weather-app-img/images/humidity.png">
+                        <div style="margin:20px" >
+                            <p >Humidity</p>
+                            <h3 class="humidity">20 %</h3>
+                        </div>
+                    </div>
+
+                    <div style="display: flex;color: white;font-weight: 300; justify-content: center;align-items: center;">
+                        <img style="width: 50px;height: 50px;"  src="./weather-app-img/images/wind.png">
+                        <div style="margin:20px" >
+                            <p >Wind-Speed</p>
+                            <h3 class="wind">20 km/hr</h3>
+                        </div>
+                    </div>
+                </div>
+                
+        </div>
+
+       <script>
+                
+                const search_input= document.querySelector(".search .input");
+                const search_button=document.querySelector(".search .button");
+
+                const url=`https://api.openweathermap.org/data/2.5/weather?units=metric&q=`
+                const api_key="2c0479fbf12d36c6c5a0808e2758b7a7"
+
+                async function getweather(city) {
+
+                    const temp= await fetch(url+city+"&appid="+api_key);
+                    const data = await temp.json();
+                    console.log(data);
+
+                    document.querySelector(".city").innerHTML= data.name;
+                    document.querySelector(".temperature").innerHTML= Math.floor(data.main.temp)+"°C";
+                    document.querySelector(".condition .humidity").innerHTML= data.main.humidity +"%";
+                    document.querySelector(".condition .wind").innerHTML= data.wind.speed +"km/hr";
+                    
+                    const weather= document.querySelector(".weather-icon");
+                    
+                    if(data.weather[0].main=="Clouds"){
+                        weather.src= "./weather-app-img/images/clouds.png";
+                    }
+
+                    else if( data.weather[0].main=="Clear"){
+                        weather.src="./weather-app-img/images/clear.png";
+                    }
+                    else if( data.weather[0].main=="Drizzle"){
+                        weather.src="./weather-app-img/images/drizzle.png";
+                    }
+                    
+                    else if( data.weather[0].main=="Mist"){
+                        weather.src="./weather-app-img/images/mist.png";
+                    }
+                    
+                    else if( data.weather[0].main=="Rain"){
+                        weather.src="./weather-app-img/images/rain.png";
+                    }
+                    else if( data.weather[0].main=="Snow"){
+                        weather.src="./weather-app-img/images/snow.png";
+                    }
+
+                }
+
+                search_button.addEventListener("click",()=>{
+                    getweather(search_input.value);
+                })
+       </script>
+
+</body>
+</html>
